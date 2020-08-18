@@ -16,11 +16,12 @@ namespace NetCoreCheckDemo
         private readonly ICalendar _calendar;
         private readonly IConfiguration _configuration;
         private readonly ILogger<HostService> _logger;
-        
+        private readonly IOptionsSnapshot<TestSettings> _testSettings;
 
         public HostService(
             IOptions<AppSettings> appSettingsOptions,
             IOptions<DefaultStudent> defaultStudentOptions,
+            IOptionsSnapshot<TestSettings> testSettings,
             ICalendar calendar,
             ILogger<HostService> logger,
             IConfiguration configuration
@@ -28,28 +29,50 @@ namespace NetCoreCheckDemo
         {
             _appSettings = appSettingsOptions.Value;
             _defaultStudent = defaultStudentOptions.Value;
+            _testSettings = testSettings;
             _calendar = calendar;
             _logger = logger;
             _configuration = configuration;
+            //_testSettings.OnChange(Listener);
         }
 
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Start ExecuteAsync");
-            int.TryParse(_configuration.GetSection("DelayInMinutes").Value, out var delayInMinutes);
-            int.TryParse(_configuration.GetSection("IterationCount").Value, out var iterationCount);
-
-            for (var i = 0; i < iterationCount; i++)
+            while (true)
             {
-                Console.WriteLine($"CommonConfig FirstName = {_appSettings.FirstName}, LastName = {_appSettings.LastName}");
-                Console.WriteLine($"EnvironmentConfig FirstName = {_defaultStudent.FirstName}, LastName = {_defaultStudent.LastName}");
-                Console.WriteLine(_calendar.GetCurrentDate());
+                var timespan = new TimeSpan(0, 0, 0, 30);
+                await Task.Delay(timespan);
+                var b = _testSettings.Get("Test2").TestAge;
+                await Task.Delay(timespan);
+                var c = _testSettings.Get("Test2").TestAge;
+                if (b != 700)
+                {
+                    _logger.LogWarning(b.ToString());
+                }
 
-                await Task.Delay(delayInMinutes, stoppingToken);
+
+                _logger.LogInformation("Start ExecuteAsync");
+                int.TryParse(_configuration.GetSection("DelayInMinutes").Value, out var delayInMinutes);
+                int.TryParse(_configuration.GetSection("IterationCount").Value, out var iterationCount);
+                var a = _testSettings.Get("Test2").TestAge;
+                for (var i = 0; i < iterationCount; i++)
+                {
+                    Console.WriteLine($"CommonConfig FirstName = {_appSettings.FirstName}, LastName = {_appSettings.LastName}");
+                    Console.WriteLine($"EnvironmentConfig FirstName = {_defaultStudent.FirstName}, LastName = {_defaultStudent.LastName}");
+                    Console.WriteLine(_calendar.GetCurrentDate());
+
+                    await Task.Delay(delayInMinutes, stoppingToken);
+                }
+
             }
-
             _logger.LogWarning("Stop ExecuteAsync");
+
+        }
+
+        private void Listener(TestSettings obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

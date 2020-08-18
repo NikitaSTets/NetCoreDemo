@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NetStandart.Calculator;
-using System;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NetStandart.Calculator;
+using System.Configuration;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace NetCoreCheckDemo
 {
@@ -25,12 +27,20 @@ namespace NetCoreCheckDemo
                           .AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
                     config.AddEnvironmentVariables();
+                    var a = new[] { "SomeValue=321" };
 
-                    config.AddCommandLine(args);
+                    config.AddCommandLine(a);
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddOptions();
+                    services.AddOptions<AppSettings>();
+                    services.PostConfigure<TestSettings>("Test1", a =>
+                    {
+                        a.TestAge = 15;
+                    });
+                    services.Configure<TestSettings>("Test2",hostContext.Configuration.GetSection("TestSettings:Test2"));
+
+                    services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<AppSettings>, AppConfigValidation>());
                     services.Configure<AppSettings>(hostContext.Configuration.GetSection("AppSettings"));
                     services.Configure<DefaultStudent>(hostContext.Configuration.GetSection("DefaultStudent"));
                     services.AddHostedService<HostService>();
