@@ -1,12 +1,10 @@
-﻿$projectPath = "D:\Core Check\NetCoreCheckDemo"
+﻿
 
-Set-Location -Path $projectPath
-
-dotnet restore .\NetCoreCheckDemo\NetCoreCheckDemo.csproj
+dotnet restore .\NetCoreCheckDemo\NetCoreCheckDemo\NetCoreCheckDemo.csproj
 
 dotnet build --no-restore
 
-#dotnet run  --project .\NetCoreCheckDemo\NetCoreCheckDemo.csproj  --no-restore /MySetting:SomeValue=123
+dotnet run  --project .\NetCoreCheckDemo\NetCoreCheckDemo\NetCoreCheckDemo.csproj  --no-restore
 
 dotnet publish -c Release
 

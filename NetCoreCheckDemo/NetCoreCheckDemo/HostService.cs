@@ -3,9 +3,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using NetStandart.Calculator;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace NetCoreCheckDemo
 {
@@ -16,16 +18,16 @@ namespace NetCoreCheckDemo
         private readonly ICalendar _calendar;
         private readonly IConfiguration _configuration;
         private readonly ILogger<HostService> _logger;
-        private readonly IOptionsSnapshot<TestSettings> _testSettings;
+        private readonly IOptionsMonitor<TestSettings> _testSettings;
+
 
         public HostService(
             IOptions<AppSettings> appSettingsOptions,
             IOptions<DefaultStudent> defaultStudentOptions,
-            IOptionsSnapshot<TestSettings> testSettings,
+            IOptionsMonitor<TestSettings> testSettings,
             ICalendar calendar,
             ILogger<HostService> logger,
-            IConfiguration configuration
-            )
+            IConfiguration configuration)
         {
             _appSettings = appSettingsOptions.Value;
             _defaultStudent = defaultStudentOptions.Value;
@@ -33,7 +35,7 @@ namespace NetCoreCheckDemo
             _calendar = calendar;
             _logger = logger;
             _configuration = configuration;
-            //_testSettings.OnChange(Listener);
+            _testSettings.OnChange(Listener);
         }
 
 
@@ -41,17 +43,13 @@ namespace NetCoreCheckDemo
         {
             while (true)
             {
+                var root = (IConfigurationRoot)_configuration;
+                var jsonProvider = root.Providers.ToArray()[1] as JsonConfigurationProvider;
+                jsonProvider.TryGet("SomeValue", out string value);
+                var someVAlue = _configuration.GetValue<int>("SomeValue");
                 var timespan = new TimeSpan(0, 0, 0, 30);
                 await Task.Delay(timespan);
                 var b = _testSettings.Get("Test2").TestAge;
-                await Task.Delay(timespan);
-                var c = _testSettings.Get("Test2").TestAge;
-                if (b != 700)
-                {
-                    _logger.LogWarning(b.ToString());
-                }
-
-
                 _logger.LogInformation("Start ExecuteAsync");
                 int.TryParse(_configuration.GetSection("DelayInMinutes").Value, out var delayInMinutes);
                 int.TryParse(_configuration.GetSection("IterationCount").Value, out var iterationCount);
@@ -66,13 +64,11 @@ namespace NetCoreCheckDemo
                 }
 
             }
-            _logger.LogWarning("Stop ExecuteAsync");
-
         }
 
         private void Listener(TestSettings obj)
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"Option Monitor Listener Test Age= {obj.TestAge}");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -24,11 +25,11 @@ namespace NetCoreCheckDemo
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                          .AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                        .AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
-                    config.AddEnvironmentVariables();
-                    var a = new[] { "SomeValue=321" };
+                    config.AddEnvironmentVariables("DOTNETCORE_");
 
+                    var a = new[] { "SomeValue=321", "ValueTest=4" };
                     config.AddCommandLine(a);
                 })
                 .ConfigureServices((hostContext, services) =>
@@ -38,12 +39,12 @@ namespace NetCoreCheckDemo
                     {
                         a.TestAge = 15;
                     });
-                    services.Configure<TestSettings>("Test2",hostContext.Configuration.GetSection("TestSettings:Test2"));
+                    services.Configure<TestSettings>("Test2", hostContext.Configuration.GetSection("TestSettings:Test2"));
 
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<AppSettings>, AppConfigValidation>());
                     services.Configure<AppSettings>(hostContext.Configuration.GetSection("AppSettings"));
                     services.Configure<DefaultStudent>(hostContext.Configuration.GetSection("DefaultStudent"));
-                    services.AddHostedService<HostService>();
+                    services.AddScoped<IHostedService, HostService>();
                     services.AddScoped<ICalendar, Calendar>();
                     services.AddLogging(configure => configure.AddConsole());
                 });
