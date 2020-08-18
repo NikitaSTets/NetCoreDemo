@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "NetCoreCheckDemo": {
+      "commandName": "Project",
+      "commandLineArgs": "-SomeValue = 15",
+      "environmentVariables": {
+        "DOTNETCORE_ENVIRONMENT": "Development",
+        "SomeValue": "45"
+      }
+    }
+  }
+}
