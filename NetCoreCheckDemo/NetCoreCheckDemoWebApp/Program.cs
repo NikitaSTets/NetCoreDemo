@@ -25,15 +25,18 @@ namespace NetCoreCheckDemoWebApp
                     var a = new[] { "SomeValue=321", "ValueTest=4" };
                     config.AddCommandLine(a);
                 })
-                .ConfigureServices((hostContext, services) =>
+                  .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<AppSettings>();
                     services.Configure<AppSettings>(hostContext.Configuration.GetSection("AppSettings"));
-                    services.AddLogging(configure => configure.AddConsole());
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddHostedService<HostedService2>();
                 });
     }
 }
