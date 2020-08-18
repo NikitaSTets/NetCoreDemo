@@ -29,6 +29,7 @@ namespace NetCoreCheckDemoWebApp
                 {
                     services.AddOptions<AppSettings>();
                     services.Configure<AppSettings>(hostContext.Configuration.GetSection("AppSettings"));
+                    services.AddHostedService<BackTask>();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -13,16 +10,19 @@ namespace NetCoreCheckDemoWebApp
         private readonly ILogger _logger;
 
 
-        public HostedService1(ILogger<HostedService2> logger)
+        public HostedService1(ILogger logger)
         {
             _logger = logger;
         }
 
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting IHostedService registered in Startup");
-            return Task.CompletedTask;
+
+            //await Task.Delay(50000);
+
+            //var a = 5;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
