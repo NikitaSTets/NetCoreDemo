@@ -7,10 +7,10 @@ namespace NetCoreCheckDemoWebApp
 {
     public class HostedService1 : IHostedService
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<HostedService1> _logger;
 
 
-        public HostedService1(ILogger logger)
+        public HostedService1(ILogger<HostedService1> logger)
         {
             _logger = logger;
         }
