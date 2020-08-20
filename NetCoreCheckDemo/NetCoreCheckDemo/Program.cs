@@ -35,7 +35,7 @@ namespace NetCoreCheckDemo
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<AppSettings>();
-                    services.PostConfigure<TestSettings>("Test1", a =>
+                    services.PostConfigureAll<TestSettings>(a =>
                     {
                         a.TestAge = 15;
                     });

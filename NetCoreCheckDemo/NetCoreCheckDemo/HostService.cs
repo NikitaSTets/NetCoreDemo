@@ -49,7 +49,13 @@ namespace NetCoreCheckDemo
                 var someVAlue = _configuration.GetValue<int>("SomeValue");
                 var timespan = new TimeSpan(0, 0, 0, 30);
                 await Task.Delay(timespan);
-                var b = _testSettings.Get("Test2").TestAge;
+                var test2Age = _testSettings.Get("Test2").TestAge;
+                var test1Age = _testSettings.Get("Test1").TestAge;
+                if (test1Age == test2Age)
+                {
+                    _logger.LogInformation("test1Age == test2Age");
+                }
+
                 _logger.LogInformation("Start ExecuteAsync");
                 int.TryParse(_configuration.GetSection("DelayInMinutes").Value, out var delayInMinutes);
                 int.TryParse(_configuration.GetSection("IterationCount").Value, out var iterationCount);
