@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetStandart", "NetStandart\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFramework", "NetFramework\NetFramework.csproj", "{77FDCB07-BAF7-4226-A7F8-F552E02B61FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreCheckDemoWebApp", "NetCoreCheckDemoWebApp\NetCoreCheckDemoWebApp.csproj", "{655D3B5B-6740-41CE-B4F1-27749B108910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreCheckDemoWebApp", "NetCoreCheckDemoWebApp\NetCoreCheckDemoWebApp.csproj", "{655D3B5B-6740-41CE-B4F1-27749B108910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreCheckTestNetCompatibility", "NetCoreCheckTestNetCompatibility\NetCoreCheckTestNetCompatibility.csproj", "{3D59A147-DB6D-402D-A99E-F72282E5A545}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{655D3B5B-6740-41CE-B4F1-27749B108910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{655D3B5B-6740-41CE-B4F1-27749B108910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{655D3B5B-6740-41CE-B4F1-27749B108910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D59A147-DB6D-402D-A99E-F72282E5A545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D59A147-DB6D-402D-A99E-F72282E5A545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D59A147-DB6D-402D-A99E-F72282E5A545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D59A147-DB6D-402D-A99E-F72282E5A545}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
